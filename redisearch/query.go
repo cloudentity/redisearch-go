@@ -128,7 +128,7 @@ func NewQuery(raw string) *Query {
 	}
 }
 
-func (q Query) serialize() redis.Args {
+func (q Query) Serialize() redis.Args {
 
 	args := redis.Args{q.Raw}.AddFlat(q.Paging.serialize())
 	if q.Flags&QueryVerbatim != 0 {

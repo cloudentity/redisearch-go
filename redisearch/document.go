@@ -87,7 +87,7 @@ func EscapeTextFileString(value string) string {
 }
 
 // convert the result from a redis query to a proper Document object
-func loadDocument(arr []interface{}, idIdx, scoreIdx, payloadIdx, fieldsIdx int) (Document, error) {
+func LoadDocument(arr []interface{}, idIdx, scoreIdx, payloadIdx, fieldsIdx int) (Document, error) {
 
 	var score float64 = 1
 	var err error

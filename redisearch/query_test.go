@@ -127,7 +127,7 @@ func TestQuery_serialize(t *testing.T) {
 				HighlightOpts: tt.fields.HighlightOpts,
 				SummarizeOpts: tt.fields.SummarizeOpts,
 			}
-			if g := q.serialize(); !reflect.DeepEqual(g, tt.want) {
+			if g := q.Serialize(); !reflect.DeepEqual(g, tt.want) {
 				t.Errorf("serialize() = %v, want %v", g, tt.want)
 			}
 		})

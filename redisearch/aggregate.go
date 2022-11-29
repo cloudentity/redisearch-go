@@ -174,19 +174,19 @@ func (a *AggregateQuery) CursorHasResults() (res bool) {
 	return
 }
 
-//Adds a APPLY clause to the aggregate plan
+// Adds a APPLY clause to the aggregate plan
 func (a *AggregateQuery) Apply(expression Projection) *AggregateQuery {
 	a.AggregatePlan = a.AggregatePlan.AddFlat(expression.Serialize())
 	return a
 }
 
-//Sets the limit for the initial pool of results from the query.
+// Sets the limit for the initial pool of results from the query.
 func (a *AggregateQuery) Limit(offset int, num int) *AggregateQuery {
 	a.Paging = NewPaging(offset, num)
 	return a
 }
 
-//Load document fields from the document HASH objects (if they are not in the sortables)
+// Load document fields from the document HASH objects (if they are not in the sortables)
 func (a *AggregateQuery) Load(Properties []string) *AggregateQuery {
 	nproperties := len(Properties)
 	if nproperties > 0 {
@@ -198,13 +198,13 @@ func (a *AggregateQuery) Load(Properties []string) *AggregateQuery {
 	return a
 }
 
-//Adds a GROUPBY clause to the aggregate plan
+// Adds a GROUPBY clause to the aggregate plan
 func (a *AggregateQuery) GroupBy(group GroupBy) *AggregateQuery {
 	a.AggregatePlan = a.AggregatePlan.AddFlat(group.Serialize())
 	return a
 }
 
-//Adds a SORTBY clause to the aggregate plan
+// Adds a SORTBY clause to the aggregate plan
 func (a *AggregateQuery) SortBy(SortByProperties []SortingKey) *AggregateQuery {
 	nsort := len(SortByProperties)
 	if nsort > 0 {
@@ -219,7 +219,7 @@ func (a *AggregateQuery) SortBy(SortByProperties []SortingKey) *AggregateQuery {
 	return a
 }
 
-//Specify filters to filter the results using predicates relating to values in the result set.
+// Specify filters to filter the results using predicates relating to values in the result set.
 func (a *AggregateQuery) Filter(expression string) *AggregateQuery {
 	a.AggregatePlan = a.AggregatePlan.Add("FILTER", expression)
 	//a.Filters = append(a.Filters, expression)
@@ -229,7 +229,7 @@ func (a *AggregateQuery) Filter(expression string) *AggregateQuery {
 func (q AggregateQuery) Serialize() redis.Args {
 	args := redis.Args{}
 	if q.Query != nil {
-		args = args.AddFlat(q.Query.serialize())
+		args = args.AddFlat(q.Query.Serialize())
 	} else {
 		args = args.Add("*")
 	}

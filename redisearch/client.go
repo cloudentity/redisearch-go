@@ -101,7 +101,7 @@ func (i *Client) Search(q *Query) (docs []Document, total int, err error) {
 	defer conn.Close()
 
 	args := redis.Args{i.name}
-	args = append(args, q.serialize()...)
+	args = append(args, q.Serialize()...)
 
 	res, err := redis.Values(conn.Do("FT.SEARCH", args...))
 	if err != nil {
@@ -135,7 +135,7 @@ func (i *Client) Search(q *Query) (docs []Document, total int, err error) {
 	if len(res) > skip {
 		for i := 1; i < len(res); i += skip {
 
-			if d, e := loadDocument(res, i, scoreIdx, payloadIdx, fieldsIdx); e == nil {
+			if d, e := LoadDocument(res, i, scoreIdx, payloadIdx, fieldsIdx); e == nil {
 				docs = append(docs, d)
 			} else {
 				log.Print("Error parsing doc: ", e)
@@ -208,7 +208,7 @@ func (i *Client) SpellCheck(q *Query, s *SpellCheckOptions) (suggs []MisspelledT
 	defer conn.Close()
 
 	args := redis.Args{i.name}
-	args = append(args, q.serialize()...)
+	args = append(args, q.Serialize()...)
 	args = append(args, s.serialize()...)
 
 	res, err := redis.Values(conn.Do("FT.SPELLCHECK", args...))
@@ -349,12 +349,12 @@ func (i *Client) Explain(q *Query) (string, error) {
 	defer conn.Close()
 
 	args := redis.Args{i.name}
-	args = append(args, q.serialize()...)
+	args = append(args, q.Serialize()...)
 
 	return redis.String(conn.Do("FT.EXPLAIN", args...))
 }
 
-//  Deletes the index and all the keys associated with it.
+// Deletes the index and all the keys associated with it.
 func (i *Client) Drop() error {
 	conn := i.pool.Get()
 	defer conn.Close()
